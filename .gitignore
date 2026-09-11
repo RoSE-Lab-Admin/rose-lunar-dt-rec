@@ -1,0 +1,4 @@
+# Raw source exports — the page uses the compressed .mp4/.jpg/.png derivatives instead.
+# Kept on disk locally, not pushed to GitHub.
+assets/**/*.gif
+assets/**/*.pdf

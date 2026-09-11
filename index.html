@@ -67,32 +67,38 @@
     text-transform:uppercase;
     color:var(--text-dim);
   }
-  .hero-figure{
-    position:relative;
-    width:100%;
-    height:clamp(140px,22vw,220px);
-    background-color:var(--surface);
-    background-image:
-      radial-gradient(circle at 12% 35%, color-mix(in srgb, var(--accent) 55%, transparent) 0%, transparent 42%),
-      radial-gradient(circle at 28% 65%, color-mix(in srgb, var(--accent2) 45%, transparent) 0%, transparent 38%),
-      radial-gradient(circle at 46% 30%, color-mix(in srgb, var(--accent) 35%, transparent) 0%, transparent 30%),
-      radial-gradient(circle at 63% 58%, color-mix(in srgb, var(--text-dim) 30%, transparent) 0%, transparent 34%),
-      radial-gradient(circle at 78% 25%, color-mix(in srgb, var(--accent2) 38%, transparent) 0%, transparent 28%),
-      radial-gradient(circle at 88% 62%, color-mix(in srgb, var(--accent) 42%, transparent) 0%, transparent 30%),
-      radial-gradient(circle at 55% 80%, color-mix(in srgb, var(--accent2) 25%, transparent) 0%, transparent 26%);
-    filter:blur(1px) saturate(1.05);
-    border-bottom:1px solid var(--border);
-  }
-  .hero-figure-caption{
-    font-family:'IBM Plex Mono',ui-monospace,monospace;
-    font-size:11.5px;
-    color:var(--text-dim);
-    text-align:right;
-    padding:6px clamp(20px,6vw,48px) 0;
-    max-width:calc(var(--max) + 96px);
-    margin:0 auto;
-  }
   .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,6vw,48px);}
+  figure{margin:0;}
+  .figure-card{
+    background:#ffffff;
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:10px;
+    overflow:hidden;
+  }
+  .figure-card img,
+  .figure-card video{
+    display:block;
+    width:100%;
+    height:auto;
+    border-radius:4px;
+  }
+  figcaption{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12px;
+    color:var(--text-dim);
+    padding:10px 2px 0;
+    line-height:1.5;
+  }
+  figcaption b{color:var(--text);font-weight:600;}
+  .figure-pair{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+  }
+  @media (max-width:620px){
+    .figure-pair{grid-template-columns:1fr;}
+  }
   header{padding:40px 0 36px;}
   .venue-line{
     display:flex;
@@ -239,9 +245,6 @@
 </head>
 <body>
 
-<div class="hero-figure" role="img" aria-label="Placeholder texture standing in for a qualitative reconstruction comparison figure"></div>
-<p class="hero-figure-caption">fig. 1 — qualitative reconstruction comparison (placeholder, swap for paper teaser)</p>
-
 <div class="wrap">
 
   <header>
@@ -281,6 +284,13 @@
     </div>
   </header>
 
+  <section>
+    <figure class="figure-card">
+      <video src="assets/gifs/rover_pov_in_reconstructed_dt_isaac_sim.mp4" poster="assets/gifs/rover_pov_poster.jpg" autoplay muted loop playsinline></video>
+      <figcaption><b>Rover POV traversing the reconstructed Digital Twin</b> — the best-performing splat reconstruction, converted to USDZ and driven live in Isaac Sim 5.</figcaption>
+    </figure>
+  </section>
+
   <section class="abstract">
     <h2>Abstract</h2>
     <p>
@@ -308,6 +318,13 @@
   </section>
 
   <section>
+    <figure class="figure-card">
+      <img src="assets/images/training_metrics_misleading.jpg" alt="Human-control GoPro reconstruction vs rover RealSense D456 reconstruction, showing higher held-out SSIM for the rover splat despite visibly worse reconstruction quality" loading="lazy">
+      <figcaption><b>Why held-out metrics mislead</b> — the rover-derived splat scores a higher held-out SSIM<sub>Tr</sub> (0.92) than the human-controlled one (0.82), despite reconstructing the scene far less faithfully. Trajectory bias inflates training metrics without reflecting true novel-view fidelity.</figcaption>
+    </figure>
+  </section>
+
+  <section>
     <h2>What the paper establishes</h2>
     <div class="rows">
       <div class="row">
@@ -326,6 +343,32 @@
         <div class="term">coverage score S<sub>c</sub></div>
         <div class="desc">A pilot geometric diagnostic from COLMAP poses and point-cloud structure that estimates the ceiling on reconstruction fidelity from trajectory geometry alone — no human-piloted reference required.</div>
       </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Method</h2>
+    <figure class="figure-card">
+      <img src="assets/images/pipeline_figure.jpg" alt="End-to-end pipeline: hand-held and rover captures, duplicate removal, LightGlue and COLMAP, 3DGS variant training, fiducial-marker alignment, CRPNVS assessment, and USDZ digital twin asset generation for Isaac Sim 5" loading="lazy">
+      <figcaption><b>Capture-to-DT pipeline</b> — hand-held (N-shaped sweep) and rover (forward-linear) captures are each reconstructed via COLMAP + 3DGS variants, aligned on shared fiducial markers, cross-assessed for CRPNVS, then exported as a simulation-ready USDZ digital twin asset.</figcaption>
+    </figure>
+    <figure class="figure-card" style="margin-top:22px;max-width:420px;">
+      <video src="assets/gifs/n_shaped_camera_sweep.mp4" poster="assets/gifs/n_shaped_sweep_poster.jpg" autoplay muted loop playsinline></video>
+      <figcaption><b>Human-controlled capture</b> — the N-shaped vertical + lateral sweep used to scan each Lunar analog scene for the clean, human-controlled reference reconstruction.</figcaption>
+    </figure>
+  </section>
+
+  <section>
+    <h2>Results</h2>
+    <div class="figure-pair">
+      <figure class="figure-card">
+        <img src="assets/images/3_panel_crpnvs_comparison.jpg" alt="Ground truth, human-controlled, and rover-derived reconstructions compared side by side across three Lunar analog scenes" loading="lazy">
+        <figcaption><b>GT vs. R<sub>Ctrl</sub> vs. R<sub>Rov</sub></b> across all three scenes — rover-derived reconstructions show visibly more haze and structural loss than the human-controlled splats, which closely track ground truth.</figcaption>
+      </figure>
+      <figure class="figure-card">
+        <img src="assets/images/coverage_score_explains_why_scene3_better_than_scene2.png" alt="COLMAP camera trajectory scatter plots for Scene 2 and Scene 3, comparing GoPro and rover coverage metrics" loading="lazy">
+        <figcaption><b>Coverage explains the gap</b> — Scene 3's less linear rover traverse yields higher W<sub>f</sub> and W<sub>d</sub> than Scene 2 despite harsher dust, explaining its superior CRPNVS SSIM.</figcaption>
+      </figure>
     </div>
   </section>
 

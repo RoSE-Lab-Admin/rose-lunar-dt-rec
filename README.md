@@ -2,30 +2,24 @@
 
 Static GitHub Pages site for the paper "A Reproducible Reconstruction and Evaluation Framework for Photorealistic Lunar Analog Scene Reconstruction Toward Digital Twins."
 
-This is already a local git repo (`git log` to see history). Add images/gifs here, then push it to GitHub.
+This is already a local git repo (`git log` to see history).
 
-## Adding images / gifs
+## Assets
 
-Drop files into `assets/images/` or `assets/gifs/`, then reference them in `index.html` with a relative path, e.g. `<img src="assets/images/reconstruction-compare.png" alt="...">`.
+`assets/gifs/` and `assets/images/` hold the web-ready media the page links to:
+- `rover_pov_in_reconstructed_dt_isaac_sim.mp4` (+ poster) — hero video, rover POV in the reconstructed DT
+- `n_shaped_camera_sweep.mp4` (+ poster) — Method section, human-controlled capture trajectory
+- `pipeline_figure.jpg` — Method section, full pipeline diagram
+- `training_metrics_misleading.jpg` — motivating figure right after the abstract
+- `3_panel_crpnvs_comparison.jpg`, `coverage_score_explains_why_scene3_better_than_scene2.png` — Results section
 
-The header currently uses a CSS placeholder (`.hero-figure`) standing in for a teaser figure. To swap in a real teaser image or GIF, replace this block in `index.html`:
-```html
-<div class="hero-figure" role="img" aria-label="..."></div>
-```
-with:
-```html
-<img class="hero-figure" src="assets/gifs/teaser.gif" alt="Qualitative reconstruction comparison across traversal conditions">
-```
-(the `.hero-figure` CSS class already sets width/height/border — an `<img>` with that class will fill the same slot; add `object-fit:cover` to the class if the media's aspect ratio doesn't match).
-
-Keep images web-sized (compress PNGs, keep GIFs short/small — GitHub Pages has no CDN optimization) so the page loads fast.
+Original `.gif`/`.pdf` source exports stay on disk but are gitignored (see `.gitignore`) — they're large and unused by the page directly, since it links the compressed `.mp4`/`.jpg`/`.png` versions instead. To add another figure: drop the source file in `assets/`, convert if needed (`ffmpeg` for gif→mp4, `pdftoppm -png -r 200 file.pdf out` for pdf→png), then reference it from `index.html` with a relative path inside a `.figure-card` (see existing `<figure>` blocks for the pattern).
 
 ## To do before publishing
-- [ ] Add real images/GIFs to `assets/` and wire them into `index.html` (teaser figure at minimum)
 - [ ] Fill in the paper link (arXiv or camera-ready PDF) — currently "coming soon" in two places (hero buttons + Resources section)
 - [ ] Fill in the real BibTeX entry once the proceedings citation exists — currently a placeholder in the Citation section
 - [ ] Double check author names/order and affiliations
-- [ ] Review the rephrased abstract on the page against the camera-ready abstract for accuracy
+- [ ] Review the rephrased abstract and figure captions against the camera-ready paper for accuracy
 
 ## Publish under RoSE-Lab-Admin
 
