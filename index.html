@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Reproducible Reconstruction and Evaluation Framework for Photorealistic Lunar Analog Scene Reconstruction Toward Digital Twins</title>
+<meta name="description" content="iSpaRo 2026 paper: a reproducible, human-referenced evaluation framework for photorealistic Lunar analog digital twin reconstruction, the CRPNVS gap, and the Coverage Score diagnostic.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f1eee7;
+    --surface:#fbf9f5;
+    --surface-2:#ffffff;
+    --border:#ddd6c8;
+    --text:#221f1a;
+    --text-dim:#6e6a5e;
+    --accent:#2e6e68;
+    --accent-contrast:#eaf3f1;
+    --accent2:#a9782f;
+    --code-bg:#ede7da;
+    --max:760px;
+    color-scheme:light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#18191b;
+      --surface:#1f2124;
+      --surface-2:#24262a;
+      --border:#34363b;
+      --text:#ecead9;
+      --text-dim:#a19d91;
+      --accent:#6fc9bd;
+      --accent-contrast:#16302c;
+      --accent2:#d9ae6c;
+      --code-bg:#202226;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#18191b;
+    --surface:#1f2124;
+    --surface-2:#24262a;
+    --border:#34363b;
+    --text:#ecead9;
+    --text-dim:#a19d91;
+    --accent:#6fc9bd;
+    --accent-contrast:#16302c;
+    --accent2:#d9ae6c;
+    --code-bg:#202226;
+    color-scheme:dark;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'IBM Plex Sans',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.65;
+  }
+  .kicker{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12px;
+    font-weight:500;
+    letter-spacing:.09em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .hero-figure{
+    position:relative;
+    width:100%;
+    height:clamp(140px,22vw,220px);
+    background-color:var(--surface);
+    background-image:
+      radial-gradient(circle at 12% 35%, color-mix(in srgb, var(--accent) 55%, transparent) 0%, transparent 42%),
+      radial-gradient(circle at 28% 65%, color-mix(in srgb, var(--accent2) 45%, transparent) 0%, transparent 38%),
+      radial-gradient(circle at 46% 30%, color-mix(in srgb, var(--accent) 35%, transparent) 0%, transparent 30%),
+      radial-gradient(circle at 63% 58%, color-mix(in srgb, var(--text-dim) 30%, transparent) 0%, transparent 34%),
+      radial-gradient(circle at 78% 25%, color-mix(in srgb, var(--accent2) 38%, transparent) 0%, transparent 28%),
+      radial-gradient(circle at 88% 62%, color-mix(in srgb, var(--accent) 42%, transparent) 0%, transparent 30%),
+      radial-gradient(circle at 55% 80%, color-mix(in srgb, var(--accent2) 25%, transparent) 0%, transparent 26%);
+    filter:blur(1px) saturate(1.05);
+    border-bottom:1px solid var(--border);
+  }
+  .hero-figure-caption{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:11.5px;
+    color:var(--text-dim);
+    text-align:right;
+    padding:6px clamp(20px,6vw,48px) 0;
+    max-width:calc(var(--max) + 96px);
+    margin:0 auto;
+  }
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 clamp(20px,6vw,48px);}
+  header{padding:40px 0 36px;}
+  .venue-line{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+  }
+  .venue-line .dot{color:var(--accent);}
+  h1{
+    font-family:'Source Serif 4',Georgia,'Times New Roman',serif;
+    font-size:clamp(24px,3.6vw,34px);
+    font-weight:700;
+    line-height:1.28;
+    letter-spacing:-.005em;
+    text-wrap:balance;
+    margin:0 0 26px;
+  }
+  .meta-grid{
+    display:grid;
+    grid-template-columns:auto 1fr;
+    column-gap:18px;
+    row-gap:10px;
+    font-size:14.5px;
+    margin-bottom:28px;
+  }
+  .meta-grid .k{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:11px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    padding-top:2px;
+    white-space:nowrap;
+  }
+  .meta-grid .v{color:var(--text);}
+  .meta-grid .v .aff-marker{color:var(--accent);font-weight:600;}
+  .meta-grid .v small{color:var(--text-dim);font-size:12.5px;display:block;margin-top:4px;line-height:1.5;}
+  .links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    padding:9px 16px;
+    border-radius:6px;
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:13px;
+    font-weight:500;
+    text-decoration:none;
+    border:1px solid var(--border);
+    background:var(--surface-2);
+    color:var(--text);
+    transition:border-color .15s, color .15s, background .15s;
+  }
+  .btn:hover{border-color:var(--accent);color:var(--accent);}
+  .btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  .btn.primary{background:var(--accent-contrast);border-color:var(--accent);color:var(--accent);}
+  .btn[aria-disabled="true"]{
+    opacity:.55;
+    cursor:default;
+    pointer-events:none;
+  }
+  section{margin:38px 0;}
+  h2{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:11.5px;
+    font-weight:600;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 16px;
+  }
+  .abstract p{
+    margin:0;
+    max-width:66ch;
+    font-size:16px;
+    color:var(--text);
+  }
+  .rows{border-top:1px solid var(--border);}
+  .row{
+    display:grid;
+    grid-template-columns:180px 1fr;
+    gap:18px;
+    padding:16px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .row .term{
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12px;
+    letter-spacing:.04em;
+    color:var(--text-dim);
+    padding-top:1px;
+  }
+  .row .desc{font-size:14.5px;color:var(--text);}
+  .row .desc a{color:var(--accent);text-decoration:none;font-weight:500;word-break:break-word;}
+  .row .desc a:hover{text-decoration:underline;}
+  .row .desc .sub{display:block;color:var(--text-dim);font-size:13px;margin-top:4px;}
+  @media (max-width:560px){
+    .row{grid-template-columns:1fr;gap:4px;}
+    .meta-grid{grid-template-columns:1fr;row-gap:4px;}
+    .meta-grid .k{margin-top:8px;}
+  }
+  .bibtex-toggle{
+    background:none;
+    border:1px solid var(--border);
+    color:var(--text-dim);
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12.5px;
+    padding:7px 14px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-bottom:12px;
+  }
+  .bibtex-toggle:hover{color:var(--accent);border-color:var(--accent);}
+  .bibtex-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:2px;}
+  #bibtex-block{display:none;}
+  pre{
+    background:var(--code-bg);
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:18px 20px;
+    overflow-x:auto;
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+    font-size:12.5px;
+    line-height:1.6;
+    color:var(--text);
+    margin:0;
+  }
+  footer{
+    color:var(--text-dim);
+    font-size:13px;
+    padding:34px 0 56px;
+    border-top:1px solid var(--border);
+    margin-top:12px;
+    font-family:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  footer a{color:var(--text-dim);}
+  footer a:hover{color:var(--accent);}
+</style>
+</head>
+<body>
+
+<div class="hero-figure" role="img" aria-label="Placeholder texture standing in for a qualitative reconstruction comparison figure"></div>
+<p class="hero-figure-caption">fig. 1 — qualitative reconstruction comparison (placeholder, swap for paper teaser)</p>
+
+<div class="wrap">
+
+  <header>
+    <p class="venue-line">
+      <span class="kicker">International Conference on Space Robotics (iSpaRo)</span>
+      <span class="dot">&middot;</span>
+      <span class="kicker">2026</span>
+    </p>
+
+    <h1>A Reproducible Reconstruction and Evaluation Framework for Photorealistic Lunar Analog Scene Reconstruction Toward Digital Twins</h1>
+
+    <div class="meta-grid">
+      <div class="k">Authors</div>
+      <div class="v">
+        Antar Mazumder<span class="aff-marker">1,*</span>,
+        Ryan Hartzell<span class="aff-marker">1</span>,
+        Luke Boyd<span class="aff-marker">1</span>,
+        Alex Robinson<span class="aff-marker">1</span>,
+        Neha Sharma<span class="aff-marker">2</span>,
+        Chance Carnival<span class="aff-marker">1</span>,
+        Frances Zhu<span class="aff-marker">1</span>
+        <small>
+          <span class="aff-marker">1</span> Dept. of Mechanical Engineering, Colorado School of Mines, Golden, CO, USA<br>
+          <span class="aff-marker">2</span> Dept. of Computer Science, Colorado School of Mines, Golden, CO, USA<br>
+          * Corresponding author
+        </small>
+      </div>
+      <div class="k">Lab</div>
+      <div class="v">RoSE Lab, Colorado School of Mines</div>
+    </div>
+
+    <div class="links">
+      <a class="btn" href="#" aria-disabled="true" title="Link will be added once available">paper — coming soon</a>
+      <a class="btn primary" href="https://github.com/RoSE-Lab-Admin/rose-crpnvs" target="_blank" rel="noopener">code →</a>
+      <a class="btn primary" href="https://huggingface.co/datasets/rose-lab-mines/rose-lunar-vtb-assets" target="_blank" rel="noopener">dataset →</a>
+      <a class="btn" href="#citation">cite</a>
+    </div>
+  </header>
+
+  <section class="abstract">
+    <h2>Abstract</h2>
+    <p>
+      Autonomous rovers capture the Moon's surface very differently than a careful human
+      operator does — motion blur, dust haze kicked up during traversal, biased
+      trajectories, and sparse viewpoints all degrade the raw footage before it ever reaches
+      a reconstruction pipeline. This work builds an evaluation framework around that gap:
+      we compare digital twins built from rover mast-camera video against twins built from
+      human-piloted footage of the same physical lunar analog terrain, using ground-truth
+      measurements as the anchor. Across three analog test sites, we train six different
+      Gaussian Splatting variants and score each with standard held-out-view photometric
+      benchmarks — then show that a model's held-out-test performance is a poor stand-in for
+      how faithfully its digital twin actually reconstructs the real scene once traversal
+      artifacts are in the mix. We call this the Cross-Reconstruction Photorealistic NVS
+      Fidelity gap (CRPNVS), and find that trajectory bias and how completely the rover's
+      camera path covers the scene's geometry explain it better than any splat-training
+      metric does. To make that coverage measurable up front, we introduce a pilot geometric
+      diagnostic, the Coverage Score, computed directly from COLMAP camera poses and
+      point-cloud structure — it estimates the best achievable reconstruction fidelity for a
+      given trajectory without needing a human-piloted reference to compare against.
+      Together, these pieces form a reproducible, human-referenced benchmark for evaluating
+      photorealistic reconstruction pipelines intended for lunar-analog digital twins and,
+      eventually, real planetary operations.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the paper establishes</h2>
+    <div class="rows">
+      <div class="row">
+        <div class="term">benchmark</div>
+        <div class="desc">A human-referenced evaluation comparing rover mast-camera and human-piloted monocular capture against physical ground truth, across three Lunar analog scenes.</div>
+      </div>
+      <div class="row">
+        <div class="term">6 splat variants</div>
+        <div class="desc">Six 3D Gaussian Splatting variants scored on standard held-out-view photometric metrics per scene.</div>
+      </div>
+      <div class="row">
+        <div class="term">the CRPNVS gap</div>
+        <div class="desc">Held-out test performance does not scale proportionally to reconstruction fidelity once traversal effects (motion blur, regolith haze, trajectory bias, sparse views) enter the picture — splat-training metrics alone under-predict it.</div>
+      </div>
+      <div class="row">
+        <div class="term">coverage score S<sub>c</sub></div>
+        <div class="desc">A pilot geometric diagnostic from COLMAP poses and point-cloud structure that estimates the ceiling on reconstruction fidelity from trajectory geometry alone — no human-piloted reference required.</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Resources</h2>
+    <div class="rows">
+      <div class="row">
+        <div class="term">paper</div>
+        <div class="desc">Coming soon <span class="sub">Publication link will be added once available.</span></div>
+      </div>
+      <div class="row">
+        <div class="term">code</div>
+        <div class="desc"><a href="https://github.com/RoSE-Lab-Admin/rose-crpnvs" target="_blank" rel="noopener">github.com/RoSE-Lab-Admin/rose-crpnvs</a><span class="sub">Coverage Score computation and reconstruction alignment scripts.</span></div>
+      </div>
+      <div class="row">
+        <div class="term">dataset</div>
+        <div class="desc"><a href="https://huggingface.co/datasets/rose-lab-mines/rose-lunar-vtb-assets" target="_blank" rel="noopener">huggingface.co/datasets/rose-lab-mines/rose-lunar-vtb-assets</a><span class="sub">Lunar analog digital twin assets.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="citation">
+    <h2>Citation</h2>
+    <button class="bibtex-toggle" onclick="var b=document.getElementById('bibtex-block');b.style.display=b.style.display==='block'?'none':'block';">show bibtex (placeholder — update once the proceedings entry exists)</button>
+    <div id="bibtex-block">
+<pre>@inproceedings{mazumder2026lunarcrpnvs,
+  title     = {A Reproducible Reconstruction and Evaluation Framework for
+               Photorealistic Lunar Analog Scene Reconstruction Toward
+               Digital Twins},
+  author    = {Mazumder, Antar and Hartzell, Ryan and Boyd, Luke and
+               Robinson, Alex and Sharma, Neha and Carnival, Chance and
+               Zhu, Frances},
+  booktitle = {International Conference on Space Robotics (iSpaRo)},
+  year      = {2026}
+}</pre>
+    </div>
+  </section>
+
+  <footer>
+    RoSE Lab, Colorado School of Mines — <a href="https://github.com/RoSE-Lab-Admin" target="_blank" rel="noopener">github.com/RoSE-Lab-Admin</a>
+  </footer>
+
+</div>
+</body>
+</html>
