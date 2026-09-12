@@ -168,6 +168,9 @@
     margin:0;
     font-size:16px;
     color:var(--text);
+    text-align:justify;
+    text-justify:inter-word;
+    hyphens:auto;
   }
 
   ul.plain{
@@ -290,26 +293,25 @@
   <section class="abstract">
     <h2>Abstract</h2>
     <p>
-      Autonomous rovers capture the Moon's surface very differently than a careful human
-      operator does — motion blur, dust haze kicked up during traversal, biased
-      trajectories, and sparse viewpoints all degrade the raw footage before it ever reaches
-      a reconstruction pipeline. This work builds an evaluation framework around that gap:
-      we compare digital twins built from rover mast-camera video against twins built from
-      human-piloted footage of the same physical lunar analog terrain, using ground-truth
-      measurements as the anchor. Across three analog test sites, we train six different
-      Gaussian Splatting variants and score each with standard held-out-view photometric
-      benchmarks — then show that a model's held-out-test performance is a poor stand-in for
-      how faithfully its digital twin actually reconstructs the real scene once traversal
-      artifacts are in the mix. We call this the Cross-Reconstruction Photorealistic NVS
-      Fidelity gap (CRPNVS), and find that trajectory bias and how completely the rover's
-      camera path covers the scene's geometry explain it better than any splat-training
-      metric does. To make that coverage measurable up front, we introduce a pilot geometric
-      diagnostic, the Coverage Score, computed directly from COLMAP camera poses and
-      point-cloud structure — it estimates the best achievable reconstruction fidelity for a
-      given trajectory without needing a human-piloted reference to compare against.
-      Together, these pieces form a reproducible, human-referenced benchmark for evaluating
-      photorealistic reconstruction pipelines intended for lunar-analog digital twins and,
-      eventually, real planetary operations.
+      In this paper, we present a reconstruction pipeline that empirically quantifies the
+      photorealistic scene reconstruction accuracy from both human-controlled and rover mast
+      camera monocular feeds against physical ground truth as a function of Lunar traversal
+      effects (e.g., motion blur, haze due to lofted regolith, trajectory bias, sparse views).
+      First, we benchmark six variants of 3D Gaussian Splatting (3DGS) across three Lunar
+      analog scenes on held-out test sets using standard photometric metrics. We then
+      establish how under traversal effects, this test-set-specific Novel View Synthesis
+      (NVS) performance does not proportionally scale to the same photometric metrics in the
+      reconstructed DTs. Our results quantify that splat training metrics alone are
+      insufficient predictors of Cross-Reconstruction Photorealistic NVS Fidelity (CRPNVS),
+      and that factors such as rover trajectory bias and geometric scene coverage play a
+      critical role in determining the photorealistic quality of the reconstructed scenes
+      targeting Lunar analog Digital Twins. Additionally, we pilot study Coverage Score
+      (S<sub>c</sub>), a geometry-based diagnostic derived from COLMAP poses and point cloud
+      structure that provides a meaningful heuristic about the highest achievable CRPNVS
+      structural fidelity, independently of splat training performance in the absence of a
+      human-controlled reference. These findings establish a standardized, human
+      control-referenced evaluation pipeline for photorealistic scene reconstruction for
+      Lunar-analog Digital Twin development and future planetary exploration.
     </p>
   </section>
 
