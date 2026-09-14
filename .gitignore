@@ -2,3 +2,8 @@
 # Kept on disk locally, not pushed to GitHub.
 assets/**/*.gif
 assets/**/*.pdf
+
+# Secrets — never commit tokens/credentials
+.env
+.env.*
+*.token
