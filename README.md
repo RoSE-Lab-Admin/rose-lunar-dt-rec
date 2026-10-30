@@ -8,7 +8,7 @@ This is already a local git repo (`git log` to see history).
 
 `assets/gifs/` and `assets/images/` hold the web-ready media the page links to:
 - `rover_pov_in_reconstructed_dt_isaac_sim.mp4` (+ poster) — hero video, rover POV in the reconstructed DT
-- `n_shaped_camera_sweep.mp4` (+ poster) — Method section, human-controlled capture trajectory
+- `human_controlled_capture.mp4` (+ poster) — Method section, operator performing the human-controlled capture (replaces `n_shaped_camera_sweep.mp4`, which is no longer referenced)
 - `pipeline_figure.jpg` — Method section, full pipeline diagram
 - `training_metrics_misleading.jpg` — motivating figure right after the abstract
 - `3_panel_crpnvs_comparison.jpg`, `coverage_score_explains_why_scene3_better_than_scene2.png` — Results section
