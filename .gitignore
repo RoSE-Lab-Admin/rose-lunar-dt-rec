@@ -7,3 +7,4 @@ assets/**/*.pdf
 .env
 .env.*
 *.token
+.claude/
