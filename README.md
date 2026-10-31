@@ -14,6 +14,7 @@ This is already a local git repo (`git log` to see history).
 - `3_panel_crpnvs_comparison.jpg`, `coverage_score_explains_why_scene3_better_than_scene2.png` — Results section
 - `conops_montage.mp4` (+ poster) — Simulation-Ready Digital Twins section, ball drop / splat vs mesh / lidar montage
 - `sensor_sim_ros2_lidar.mp4` (+ poster) — Simulation-Ready Digital Twins section, Nova Carter lidar streamed to RViz over ROS 2
+- `wheel_terrain_interaction.mp4` (+ poster) — Simulation-Ready Digital Twins section, rover on granular terrain with the splat DT as backdrop
 
 Original `.gif`/`.pdf` source exports stay on disk but are gitignored (see `.gitignore`) — they're large and unused by the page directly, since it links the compressed `.mp4`/`.jpg`/`.png` versions instead. To add another figure: drop the source file in `assets/`, convert if needed (`ffmpeg` for gif→mp4, `pdftoppm -png -r 200 file.pdf out` for pdf→png), then reference it from `index.html` with a relative path inside a `.figure-card` (see existing `<figure>` blocks for the pattern).
 
