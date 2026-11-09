@@ -19,7 +19,7 @@ This is already a local git repo (`git log` to see history).
 Original `.gif`/`.pdf` source exports stay on disk but are gitignored (see `.gitignore`) — they're large and unused by the page directly, since it links the compressed `.mp4`/`.jpg`/`.png` versions instead. To add another figure: drop the source file in `assets/`, convert if needed (`ffmpeg` for gif→mp4, `pdftoppm -png -r 200 file.pdf out` for pdf→png), then reference it from `index.html` with a relative path inside a `.figure-card` (see existing `<figure>` blocks for the pattern).
 
 ## To do before publishing
-- [ ] Fill in the paper link (arXiv or camera-ready PDF) — currently "coming soon" in two places (hero buttons + Resources section)
+- [x] Fill in the paper link — arXiv:2611.00870 (hero button + Resources section)
 - [ ] Fill in the real BibTeX entry once the proceedings citation exists — currently a placeholder in the Citation section
 - [ ] Double check author names/order and affiliations
 - [ ] Review the rephrased abstract and figure captions against the camera-ready paper for accuracy
